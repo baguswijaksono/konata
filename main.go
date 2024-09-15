@@ -29,6 +29,12 @@ type Workspace struct {
 
 // Initialize the database and run the migrations
 func initDB() {
+    if _, err := os.Stat("history.db"); os.IsNotExist(err) {
+        fmt.Println("Database file does not exist, creating a new one...")
+    } else if err != nil {
+        panic("failed to check if database file exists")
+    }
+
     var err error
     db, err = gorm.Open(sqlite.Open("history.db"), &gorm.Config{})
     if err != nil {
