@@ -2,6 +2,7 @@ package main
 
 import (
     "fmt"
+    "os" // Add this line
     "os/exec"
     "strings"
     "time"
@@ -110,7 +111,49 @@ func main() {
     // Create a Gin router
     r := gin.Default()
 
-    // Serve static files (for frontend HTML)
+    r.GET("/", func(c *gin.Context) {
+        c.Header("Content-Type", "text/html")
+        c.String(200, `
+        <html>
+        <head>
+        <title>Brutalist Websites – NOW CHILD</title>
+
+        <style>
+        body {
+        font-family: monospace;
+        background-color: #eee; 
+        margin: 40px;
+        }
+        .box {
+        width:400px;
+        height: 250px;
+        float: left;
+        padding: 0px 40px 80px 0px;
+        }
+        .screenshot {
+        width:400px; 
+        }
+        </style>
+
+        </head>
+        <body>
+
+        <div class="box">
+        <p>Konata (baguswijaksono)<br/>
+        <br/>
+        A Lightweight API client testing tool built with Go and a web-based UI. 
+        It allows users to execute curl commands via the browser, 
+        making it a simple alternative to tools like Postman. <br/>
+        <br/>
+        <a href="/static/">try now</a><br>
+        <a href="https://github.com/baguswijaksono/konata">repo</a>
+        </p>
+        </div>
+        </body>
+        </html>
+        `)
+    })
+
     r.Static("/static", "./static")
 
     // Define API routes
@@ -123,4 +166,3 @@ func main() {
     fmt.Println("Server running at http://localhost:8080")
     r.Run() // listen and serve on 0.0.0.0:8080
 }
-
