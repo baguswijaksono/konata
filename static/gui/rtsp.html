@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Konata</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>RTSP URL to Curl Command</h1>
+        <input type="text" id="rtspUrl" placeholder="Enter RTSP URL">
+        <button onclick="generateCurlCommand()">Generate Curl Command</button>
+        <div class="output" id="output"></div>
+    </div>
+
+    <script>
+        function generateCurlCommand() {
+            const rtspUrl = document.getElementById('rtspUrl').value;
+            if (rtspUrl) {
+                const curlCommand = `curl -O ${rtspUrl}`;
+                document.getElementById('output').innerText = curlCommand;
+            } else {
+                document.getElementById('output').innerText = 'Please enter a valid RTSP URL.';
+            }
+        }
+    </script>
+</body>
+</html>

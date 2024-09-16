@@ -125,6 +125,9 @@ func main() {
 	initDB()
 	r := gin.Default()
 	r.StaticFile("/", "./static/index.html")
+	r.StaticFile("/style.css", "./static/style.css")
+
+	r.StaticFile("/http", "./static/gui/http.html")
 
 	r.StaticFile("/cli", "./static/cli/index.html")
 	r.StaticFile("/gui", "./static/gui/index.html")
@@ -133,5 +136,5 @@ func main() {
 	r.GET("/history", getHistory)
 	r.POST("/workspace", createWorkspace)
 	r.GET("/workspaces", getWorkspaces)
-	r.Run(":8081")
+	r.Run()
 }

@@ -1,0 +1,11 @@
+body {
+    font-family: monospace;
+    background-color: #eee; 
+    margin: 40px;
+}
+.box {
+    width: 400px;
+    height: 250px;
+    float: left;
+    padding: 0 40px 80px 0;
+}
