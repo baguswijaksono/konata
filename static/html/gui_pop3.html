@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Konata</title>
+    <link rel="stylesheet" type="text/css" href="/style">
+</head>
+<body>
+    <div>
+        <h1>POP3 Request</h1>
+        
+        <div>
+            <label for="server">Server</label>
+            <input type="text" id="server" name="server" placeholder="pop3.example.com">
+        </div>
+
+        <div>
+            <label for="port">Port</label>
+            <input type="text" id="port" name="port" placeholder="110">
+        </div>
+
+        <div>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="your-email@example.com">
+        </div>
+
+        <div>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="your-password">
+        </div>
+
+        <div>
+            <button onclick="sendPOP3Request()">Send</button>
+        </div>
+
+        <div>
+            <button onclick="window.location.href='/gui'">Back</button>
+        </div>
+    </div>
+
+    <script>
+        function sendPOP3Request() {
+            const server = document.getElementById('server').value;
+            const port = document.getElementById('port').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const curlCommand = `curl --url pop3://${server}:${port} --user ${username}:${password}`;
+            console.log(curlCommand);
+            // You can use the curlCommand to make the actual request or display it to the user
+        }
+    </script>
+</body>
+</html>

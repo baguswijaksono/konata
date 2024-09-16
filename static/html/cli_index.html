@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Konata</title>
+    <link rel="stylesheet" type="text/css" href="/style">
+</head>
+<body>
+  <div>
+    <h1>API Client Testing</h1>
+
+    <!-- Workspace selection -->
+    <label for="workspaceSelect">Select Workspace:</label>
+    <select id="workspaceSelect">
+      <!-- Options will be populated by JavaScript -->
+    </select>
+
+    <br>
+    <!-- Create Workspace -->
+    <h2>Create Workspace:</h2>
+    <input id="workspaceName" type="text" placeholder="Workspace Name">
+    <br>
+    <textarea id="workspaceConfig" rows="3" placeholder="Workspace Config"></textarea>
+    <br>
+    <button id="createWorkspaceBtn">Create Workspace</button>
+    <br>
+    <!-- Textarea for curl command input -->
+    <textarea id="curlCommand" rows="5" placeholder="Enter curl command"></textarea>
+    <br>
+    <button id="executeBtn">Execute</button>
+    <br>
+    <!-- Response display -->
+    <h2>Response:</h2>
+    <pre id="responseOutput"></pre>
+    <br>
+    <!-- History display -->
+    <h2>History:</h2>
+    <ul id="historyList"></ul>
+  </div>
+
+</body>
+</html>

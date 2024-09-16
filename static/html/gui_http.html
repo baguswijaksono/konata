@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Konata</title>
+    <link rel="stylesheet" type="text/css" href="/style">
+</head>
+<body>
+    <div>
+        <h1>HTTP Request</h1>
+        
+        <div>
+            <label for="http-method">HTTP Method</label>
+            <select id="http-method" name="http-method">
+                <option>GET</option>
+                <option>POST</option>
+                <option>PUT</option>
+                <option>DELETE</option>
+                <option>PATCH</option>
+            </select>
+            <input type="text" name="url" id="url" placeholder="https://api.example.com/endpoint">
+            <button>Send</button>
+        </div>
+
+        <div>
+            <label for="authorization">Authorization</label>
+            <input type="text" id="authorization" name="authorization" placeholder="Bearer token">
+        </div>
+
+        <div>
+            <label for="headers">Headers</label>
+            <textarea id="headers" name="headers" rows="4" placeholder='{"Content-Type": "application/json"}'></textarea>
+        </div>
+
+        <div>
+            <label for="body">Body</label>
+            <textarea id="body" name="body" rows="6" placeholder='{"key": "value"}'></textarea>
+        </div>
+
+        <div>
+            <h2>Advanced Options</h2>
+
+            <div>
+                <input type="checkbox" id="verbose" name="verbose">
+                <label for="verbose">Verbose Mode</label>
+            </div>
+
+            <div>
+                <input type="checkbox" id="follow-redirects" name="follow-redirects">
+                <label for="follow-redirects">Follow Redirects (-L)</label>
+            </div>
+
+            <div>
+                <input type="checkbox" id="insecure" name="insecure">
+                <label for="insecure">Ignore SSL Errors (-k)</label>
+            </div>
+
+            <div>
+                <label for="http-version">HTTP Version</label>
+                <select id="http-version" name="http-version">
+                    <option value="">Default</option>
+                    <option value="--http1.0">HTTP 1.0</option>
+                    <option value="--http2">HTTP 2.0</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="proxy">Proxy</label>
+                <input type="text" id="proxy" name="proxy" placeholder="http://proxy.example.com:8080">
+            </div>
+
+            <div>
+                <label for="output-file">Output to File</label>
+                <input type="text" id="output-file" name="output-file" placeholder="output.txt">
+            </div>
+
+            <div>
+                <input type="checkbox" id="custom-certs" name="custom-certs">
+                <label for="custom-certs">Use Custom Certificate (--cert)</label>
+                <input type="text" id="cert-file" name="cert-file" placeholder="/path/to/cert.pem">
+            </div>
+
+            <div>
+                <label for="timeout">Timeout (Seconds)</label>
+                <input type="number" id="timeout" name="timeout" placeholder="60">
+            </div>
+        </div>
+
+        <div>
+            <button onclick="window.location.href='/gui'">Back</button>
+        </div>
+    </div>
+</body>
+</html>

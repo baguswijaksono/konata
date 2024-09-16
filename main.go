@@ -55,7 +55,7 @@ func ExecuteCurlCommand(curlCommand string) (string, error) {
 func executeCurl(c *gin.Context) {
 	var json struct {
 		Command   string `json:"command"`
-		Workspace string `json:"workspace"` // Expect workspace name from the request
+		Workspace string `json:"workspace"`
 	}
 
 	if err := c.BindJSON(&json); err != nil {
@@ -63,33 +63,29 @@ func executeCurl(c *gin.Context) {
 		return
 	}
 
-	// Find the workspace by name
 	var workspace Workspace
 	if err := db.Where("name = ?", json.Workspace).First(&workspace).Error; err != nil {
 		c.JSON(400, gin.H{"error": "Workspace not found"})
 		return
 	}
 
-	// Execute the curl command
 	response, err := ExecuteCurlCommand(json.Command)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
 
-	// Check if a similar command exists in the same workspace
 	var existingHistory History
 	if err := db.Where("command = ? AND workspace_id = ?", json.Command, workspace.ID).First(&existingHistory).Error; err == nil {
 		c.JSON(200, gin.H{"response": response})
 		return
 	}
 
-	// Save the new command history
 	db.Create(&History{
 		Command:     json.Command,
 		Response:    response,
 		Timestamp:   time.Now(),
-		WorkspaceID: workspace.ID, // Associate the workspace
+		WorkspaceID: workspace.ID,
 	})
 
 	c.JSON(200, gin.H{"response": response})
@@ -124,13 +120,27 @@ func getWorkspaces(c *gin.Context) {
 func main() {
 	initDB()
 	r := gin.Default()
-	r.StaticFile("/", "./static/index.html")
-	r.StaticFile("/style.css", "./static/style.css")
 
-	r.StaticFile("/http", "./static/gui/http.html")
+	staticFiles := map[string]string{
+		"/":      "./static/html/index.html",
+		"/cli":   "./static/html/cli_index.html",
+		"/gui":   "./static/html/gui_index.html",
+		"/style": "./static/css/style.css",
 
-	r.StaticFile("/cli", "./static/cli/index.html")
-	r.StaticFile("/gui", "./static/gui/index.html")
+		"/http": "./static/html/gui_http.html",
+		"/ws":   "./static/html/gui_ws.html",
+		"/mqtt": "./static/html/gui_mqqt.html",
+		"/tcp":  "./static/html/gui_tcp.html",
+		"/ftp":  "./static/html/gui_ftp.html",
+		"/ssh":  "./static/html/gui_ssh.html",
+		"/smtp": "./static/html/gui_smtp.html",
+		"/pop3": "./static/html/gui_pop3.html",
+		"/imap": "./static/html/gui_imap.html",
+	}
+
+	for route, file := range staticFiles {
+		r.StaticFile(route, file)
+	}
 
 	r.POST("/execute", executeCurl)
 	r.GET("/history", getHistory)

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Konata MQTT Client</title>
+    <link rel="stylesheet" type="text/css" href="/style">
+</head>
+<body>
+    <div>
+        <h1>MQTT Client</h1>
+        
+        <div>
+            <label for="broker-url">Broker URL</label>
+            <input type="text" id="broker-url" placeholder="mqtt://broker.hivemq.com">
+        </div>
+        
+        <div>
+            <label for="topic">Topic</label>
+            <input type="text" id="topic" placeholder="test/topic">
+        </div>
+
+        <div>
+            <label for="qos">QoS Level</label>
+            <select id="qos">
+                <option value="0">QoS 0 - At most once</option>
+                <option value="1">QoS 1 - At least once</option>
+                <option value="2">QoS 2 - Exactly once</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="retain">Retain Message</label>
+            <input type="checkbox" id="retain">
+        </div>
+
+        <div>
+            <label for="message">Message</label>
+            <textarea id="message" rows="4" placeholder="Your message here..."></textarea>
+        </div>
+
+        <div>
+            <h2>Connection Options</h2>
+
+            <div>
+                <label for="client-id">Client ID</label>
+                <input type="text" id="client-id" placeholder="Unique client ID (optional)">
+            </div>
+
+            <div>
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Username (if required)">
+            </div>
+
+            <div>
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Password (if required)">
+            </div>
+
+            <div>
+                <label for="clean-session">Clean Session</label>
+                <input type="checkbox" id="clean-session" checked>
+            </div>
+
+            <div>
+                <label for="keepalive">Keep Alive Interval (seconds)</label>
+                <input type="number" id="keepalive" placeholder="60" value="60">
+            </div>
+
+            <div>
+                <label for="ssl">Use SSL/TLS</label>
+                <input type="checkbox" id="ssl">
+            </div>
+
+            <div id="ssl-options" style="display: none;">
+                <label for="cert-file">Client Certificate</label>
+                <input type="text" id="cert-file" placeholder="/path/to/cert.pem">
+                
+                <label for="key-file">Client Key</label>
+                <input type="text" id="key-file" placeholder="/path/to/key.pem">
+                
+                <label for="insecure">Ignore SSL Errors</label>
+                <input type="checkbox" id="insecure">
+            </div>
+        </div>
+
+        <div>
+            <button id="connect-btn">Connect</button>
+            <button id="publish-btn">Publish</button>
+            <button id="subscribe-btn">Subscribe</button>
+            <button id="disconnect-btn">Disconnect</button>
+        </div>
+
+        <div>
+            <h2>Logs</h2>
+            <div id="logs">
+                <!-- Logs will appear here -->
+            </div>
+        </div>
+
+        <div>
+            <a href="/gui">Back</a>
+        </div>
+    </div>
+
+    <script>
+        // Show SSL options if the SSL checkbox is checked
+        document.getElementById('ssl').addEventListener('change', function() {
+            var sslOptions = document.getElementById('ssl-options');
+            if (this.checked) {
+                sslOptions.style.display = 'block';
+            } else {
+                sslOptions.style.display = 'none';
+            }
+        });
+
+        // Implementing simple log system (this would be expanded for actual MQTT client functionality)
+        function logMessage(message) {
+            var logsDiv = document.getElementById('logs');
+            var newLog = document.createElement('div');
+            newLog.textContent = message;
+            logsDiv.appendChild(newLog);
+        }
+
+        // Placeholder actions for buttons (these would be hooked up to actual MQTT functionality in practice)
+        document.getElementById('connect-btn').addEventListener('click', function() {
+            logMessage('Connecting to broker...');
+            // Add actual MQTT connection logic here
+        });
+
+        document.getElementById('publish-btn').addEventListener('click', function() {
+            logMessage('Publishing message...');
+            // Add actual MQTT publish logic here
+        });
+
+        document.getElementById('subscribe-btn').addEventListener('click', function() {
+            logMessage('Subscribing to topic...');
+            // Add actual MQTT subscribe logic here
+        });
+
+        document.getElementById('disconnect-btn').addEventListener('click', function() {
+            logMessage('Disconnecting from broker...');
+            // Add actual MQTT disconnect logic here
+        });
+    </script>
+</body>
+</html>

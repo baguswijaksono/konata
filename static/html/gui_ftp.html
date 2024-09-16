@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Konata FTP Client</title>
+    <link rel="stylesheet" type="text/css" href="/style">
+</head>
+<body>
+    <div>
+        <h1>FTP Client</h1>
+        
+        <div>
+            <label for="ftp-url">FTP Server URL</label>
+            <input type="text" id="ftp-url" placeholder="ftp://ftp.example.com">
+        </div>
+
+        <div>
+            <label for="ftp-action">Action</label>
+            <select id="ftp-action">
+                <option value="list">List Directory</option>
+                <option value="upload">Upload File</option>
+                <option value="download">Download File</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="ftp-file">File (for Upload/Download)</label>
+            <input type="text" id="ftp-file" placeholder="/path/to/file or filename">
+        </div>
+
+        <div>
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="Username (optional)">
+        </div>
+
+        <div>
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Password (optional)">
+        </div>
+
+        <div>
+            <label for="passive-mode">Passive Mode</label>
+            <input type="checkbox" id="passive-mode" checked>
+        </div>
+
+        <div>
+            <label for="ssl">Use SSL/TLS</label>
+            <input type="checkbox" id="ssl">
+        </div>
+
+        <div id="ssl-options" style="display: none;">
+            <label for="cert-file">Client Certificate</label>
+            <input type="text" id="cert-file" placeholder="/path/to/cert.pem">
+            
+            <label for="key-file">Client Key</label>
+            <input type="text" id="key-file" placeholder="/path/to/key.pem">
+            
+            <label for="insecure">Ignore SSL Errors</label>
+            <input type="checkbox" id="insecure">
+        </div>
+
+        <div>
+            <button id="connect-btn">Connect</button>
+            <button id="execute-btn">Execute Action</button>
+            <button id="disconnect-btn">Disconnect</button>
+        </div>
+
+        <div>
+            <h2>Logs</h2>
+            <div id="logs">
+                <!-- Logs will appear here -->
+            </div>
+        </div>
+
+        <div>
+            <a href="/gui">Back</a>
+        </div>
+    </div>
+
+    <script>
+        // Show SSL options if the SSL checkbox is checked
+        document.getElementById('ssl').addEventListener('change', function() {
+            var sslOptions = document.getElementById('ssl-options');
+            if (this.checked) {
+                sslOptions.style.display = 'block';
+            } else {
+                sslOptions.style.display = 'none';
+            }
+        });
+
+        // Implementing simple log system (this would be expanded for actual FTP client functionality)
+        function logMessage(message) {
+            var logsDiv = document.getElementById('logs');
+            var newLog = document.createElement('div');
+            newLog.textContent = message;
+            logsDiv.appendChild(newLog);
+        }
+
+        // Placeholder actions for buttons (these would be hooked up to actual FTP functionality in practice)
+        document.getElementById('connect-btn').addEventListener('click', function() {
+            logMessage('Connecting to FTP server...');
+            // Add actual FTP connection logic here
+        });
+
+        document.getElementById('execute-btn').addEventListener('click', function() {
+            var action = document.getElementById('ftp-action').value;
+            logMessage('Executing action: ' + action);
+            // Add actual FTP action logic here (upload, download, list)
+        });
+
+        document.getElementById('disconnect-btn').addEventListener('click', function() {
+            logMessage('Disconnecting from FTP server...');
+            // Add actual FTP disconnect logic here
+        });
+    </script>
+</body>
+</html>

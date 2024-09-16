@@ -1,44 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Konata</title>
-    <link rel="stylesheet" type="text/css" href="/style.css">
-</head>
-<body>
-  <div>
-    <h1>API Client Testing</h1>
-
-    <!-- Workspace selection -->
-    <label for="workspaceSelect">Select Workspace:</label>
-    <select id="workspaceSelect">
-      <!-- Options will be populated by JavaScript -->
-    </select>
-
-    <br>
-
-    <!-- Create Workspace -->
-    <h2>Create Workspace:</h2>
-    <input id="workspaceName" type="text" placeholder="Workspace Name">
-    <br>
-    <textarea id="workspaceConfig" rows="3" placeholder="Workspace Config"></textarea>
-    <br>
-    <button id="createWorkspaceBtn">Create Workspace</button>
-    <br>
-    <!-- Textarea for curl command input -->
-    <textarea id="curlCommand" rows="5" placeholder="Enter curl command"></textarea>
-    <br>
-    <button id="executeBtn">Execute</button>
-    <br>
-    <!-- Response display -->
-    <h2>Response:</h2>
-    <pre id="responseOutput"></pre>
-    <br>
-    <!-- History display -->
-    <h2>History:</h2>
-    <ul id="historyList"></ul>
-  </div>
-
-  <script>
 document.getElementById('executeBtn').addEventListener('click', async () => {
   const command = document.getElementById('curlCommand').value;
   const workspace = document.getElementById('workspaceSelect').value; // Get the selected workspace
@@ -90,6 +49,3 @@ document.getElementById('executeBtn').addEventListener('click', async () => {
 
     loadHistory();  // Initial load of history on page load
     loadWorkspaces();  // Initial load of workspaces on page load
-  </script>
-</body>
-</html>
