@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en"></html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MQTT Client</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
+        <h1 class="text-2xl font-bold mb-4">MQTT Client</h1>
+        
+        <div class="mb-6">
+            <label class="block text-gray-700">Broker URL</label>
+            <input type="text" class="w-full p-2 border border-gray-300 rounded mt-1" placeholder="mqtt://broker.hivemq.com">
+        </div>
+        
+        <div class="mb-6">
+            <label class="block text-gray-700">Topic</label>
+            <input type="text" class="w-full p-2 border border-gray-300 rounded mt-1" placeholder="test/topic">
+        </div>
+        
+        <div class="mb-6">
+            <label class="block text-gray-700">Message</label>
+            <textarea class="w-full p-2 border border-gray-300 rounded mt-1" rows="4" placeholder="Your message here..."></textarea>
+        </div>
+        
+        <div class="flex space-x-4">
+            <button class="bg-blue-500 text-white px-4 py-2 rounded">Connect</button>
+            <button class="bg-green-500 text-white px-4 py-2 rounded">Publish</button>
+            <button class="bg-yellow-500 text-white px-4 py-2 rounded">Subscribe</button>
+            <button class="bg-red-500 text-white px-4 py-2 rounded">Disconnect</button>
+        </div>
+        
+        <div class="mt-6">
+            <h2 class="text-xl font-bold mb-2">Logs</h2>
+            <div class="bg-gray-100 p-4 border border-gray-300 rounded h-64 overflow-y-auto">
+                <!-- Logs will appear here -->
+            </div>
+        </div>
+    </div>
+</body>
+</html></div></body>

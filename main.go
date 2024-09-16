@@ -24,17 +24,15 @@ type History struct {
 	Command     string    `gorm:"type:text"`
 	Response    string    `gorm:"type:text"`
 	Timestamp   time.Time `gorm:"autoCreateTime"`
-	WorkspaceID uint      `gorm:"index;not null;type:bigint unsigned"` // Ensure bigint unsigned for foreign key
+	WorkspaceID uint      `gorm:"index;not null;type:bigint unsigned"`
 }
 
 func initDB() {
-	// Create the database if it doesn't exist
 	createDBCmd := exec.Command("mysql", "-u", "phpmyadmin", "-pyour_password", "-e", "CREATE DATABASE IF NOT EXISTS konata")
 	if err := createDBCmd.Run(); err != nil {
 		panic("failed to create database")
 	}
 
-	// Connect to the database
 	dsn := "phpmyadmin:your_password@tcp(127.0.0.1:3306)/konata?charset=utf8mb4&parseTime=True&loc=Local"
 	var err error
 	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
@@ -42,7 +40,6 @@ func initDB() {
 		panic("failed to connect to database")
 	}
 
-	// Create the tables
 	if err := db.AutoMigrate(&Workspace{}, &History{}); err != nil {
 		panic("failed to migrate database")
 	}

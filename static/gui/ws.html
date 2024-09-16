@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Client</title>
+</head>
+<body>
+    <header>
+        WebSocket Client
+    </header>
+    <div>
+        <div>
+            <label for="url">WebSocket URL</label>
+            <input type="text" id="url" placeholder="ws://example.com/socket">
+        </div>
+        <div>
+            <label for="message">Message</label>
+            <textarea id="message" placeholder="Enter your message here"></textarea>
+        </div>
+        <div>
+            <button id="connect">Connect</button>
+            <button id="send" disabled>Send</button>
+        </div>
+        <div id="messages"></div>
+    </div>
+</body>
+</html>
