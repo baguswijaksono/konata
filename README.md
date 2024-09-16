@@ -17,7 +17,7 @@ Konata is a simple web application built with Go, Gin, and Gorm that allows you 
 1. Clone the repository:
 
     ```sh
-    git clone https://github.com/yourusername/konata.git
+    git clone https://github.com/baguswijaksono/konata.git
     cd konata
     ```
 
@@ -40,17 +40,3 @@ Konata is a simple web application built with Go, Gin, and Gorm that allows you 
     ```
 
     The server will start running at `http://localhost:8080`.
-
-## API Endpoints
-
-- `POST /execute`: Execute a curl command.
-- `GET /history`: Retrieve the command execution history.
-- `POST /workspace`: Create a new workspace.
-- `GET /workspaces`: Retrieve all workspaces.
-
-## Usage
-
-You can use tools like `curl` or Postman to interact with the API endpoints.
-
-### Execute a curl command
-
