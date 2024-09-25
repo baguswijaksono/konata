@@ -117,22 +117,77 @@ func getWorkspaces(c *gin.Context) {
 	c.JSON(200, workspaces)
 }
 
+// Edit workspace feature
+func editWorkspace(c *gin.Context) {
+	var json struct {
+		Name   string `json:"name"`
+		Config string `json:"config"`
+	}
+	id := c.Param("id")
+
+	if err := c.BindJSON(&json); err != nil {
+		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
+
+	var workspace Workspace
+	if err := db.First(&workspace, id).Error; err != nil {
+		c.JSON(404, gin.H{"error": "Workspace not found"})
+		return
+	}
+
+	workspace.Name = json.Name
+	workspace.Config = json.Config
+	db.Save(&workspace)
+
+	c.JSON(200, gin.H{"message": "Workspace updated"})
+}
+
+// Delete workspace feature
+func deleteWorkspace(c *gin.Context) {
+	id := c.Param("id")
+
+	var workspace Workspace
+	if err := db.First(&workspace, id).Error; err != nil {
+		c.JSON(404, gin.H{"error": "Workspace not found"})
+		return
+	}
+
+	// Delete associated histories
+	db.Where("workspace_id = ?", workspace.ID).Delete(&History{})
+	// Delete the workspace
+	db.Delete(&workspace)
+
+	c.JSON(200, gin.H{"message": "Workspace deleted"})
+}
+
+func getWorkspace(c *gin.Context) {
+	id := c.Param("id") // Get the workspace ID from the URL parameters
+	var workspace Workspace
+	if err := db.First(&workspace, id).Error; err != nil {
+		c.JSON(404, gin.H{"error": "Workspace not found"})
+		return
+	}
+	c.JSON(200, workspace)
+}
+
 func main() {
 	initDB()
 	r := gin.Default()
 
 	staticFiles := map[string]string{
-		"/":      "./static/html/index.html",
-		"/cli":   "./static/html/cli_index.html",
-		"/gui":   "./static/html/gui_index.html",
-		"/style": "./static/css/style.css",
+		"/":       "./static/index.html",
+		"/cli":    "./static/html/cli_index.html",
+		"/gui":    "./static/html/gui_index.html",
+		"/style":  "./static/css/style.css",
+		"/cli_js": "./static/js/cli_index.js",
+		"/works":  "./static/html/workspace_index.html",
 
 		"/http": "./static/html/gui_http.html",
 		"/ws":   "./static/html/gui_ws.html",
 		"/mqtt": "./static/html/gui_mqqt.html",
 		"/tcp":  "./static/html/gui_tcp.html",
 		"/ftp":  "./static/html/gui_ftp.html",
-		"/ssh":  "./static/html/gui_ssh.html",
 		"/smtp": "./static/html/gui_smtp.html",
 		"/pop3": "./static/html/gui_pop3.html",
 		"/imap": "./static/html/gui_imap.html",
@@ -146,5 +201,9 @@ func main() {
 	r.GET("/history", getHistory)
 	r.POST("/workspace", createWorkspace)
 	r.GET("/workspaces", getWorkspaces)
+	r.GET("/workspace/:id", getWorkspace)       // Get workspace route
+	r.PUT("/workspace/:id", editWorkspace)      // Edit workspace route
+	r.DELETE("/workspace/:id", deleteWorkspace) // Delete workspace route
+
 	r.Run()
 }

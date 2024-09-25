@@ -1,35 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Konata</title>
+    <title>Konata POP3 Client</title>
     <link rel="stylesheet" type="text/css" href="/style">
 </head>
 <body>
     <div>
-        <h1>POP3 Request</h1>
-        
+        <h1>POP3 Client</h1>
+
         <div>
-            <label for="server">Server</label>
-            <input type="text" id="server" name="server" placeholder="pop3.example.com">
+            <label for="pop3-server">POP3 Server</label>
+            <input type="text" id="pop3-server" placeholder="pop.example.com" value="pop.example.com">
         </div>
 
         <div>
-            <label for="port">Port</label>
-            <input type="text" id="port" name="port" placeholder="110">
+            <label for="pop3-port">Port</label>
+            <input type="number" id="pop3-port" placeholder="110" value="110">
         </div>
 
         <div>
             <label for="username">Username</label>
-            <input type="text" id="username" name="username" placeholder="your-email@example.com">
+            <input type="text" id="username" placeholder="your.email@example.com">
         </div>
 
         <div>
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="your-password">
+            <input type="password" id="password" placeholder="Your password">
         </div>
 
         <div>
-            <button onclick="sendPOP3Request()">Send</button>
+            <button id="connect-btn">Connect</button>
+            <button id="disconnect-btn" disabled>Disconnect</button>
+        </div>
+
+        <div>
+            <h2>Emails</h2>
+            <select id="email-list" size="10" style="width: 100%;"></select>
+            <button id="retrieve-email-btn" disabled>Retrieve Email</button>
+        </div>
+
+        <div>
+            <h2>Email Content</h2>
+            <div id="email-content" style="border: 1px solid #000; padding: 10px; height: 150px; overflow-y: scroll;">
+                <!-- Email content will appear here -->
+            </div>
+        </div>
+
+        <div>
+            <h2>Logs</h2>
+            <div id="logs" style="border: 1px solid #000; padding: 10px; height: 100px; overflow-y: scroll;">
+                <!-- Logs will appear here -->
+            </div>
         </div>
 
         <div>
@@ -38,16 +59,73 @@
     </div>
 
     <script>
-        function sendPOP3Request() {
-            const server = document.getElementById('server').value;
-            const port = document.getElementById('port').value;
+        let pop3Connection;
+
+        function logMessage(message) {
+            const logsDiv = document.getElementById('logs');
+            const newLog = document.createElement('div');
+            newLog.textContent = message;
+            logsDiv.appendChild(newLog);
+            logsDiv.scrollTop = logsDiv.scrollHeight; // Auto scroll to the latest log
+        }
+
+        function updateEmailList(emailList) {
+            const emailListSelect = document.getElementById('email-list');
+            emailListSelect.innerHTML = ''; // Clear the previous list
+            emailList.forEach((email, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = `Email ${index + 1}: ${email.subject}`;
+                emailListSelect.appendChild(option);
+            });
+        }
+
+        document.getElementById('connect-btn').addEventListener('click', function() {
+            const server = document.getElementById('pop3-server').value;
+            const port = document.getElementById('pop3-port').value;
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            const curlCommand = `curl --url pop3://${server}:${port} --user ${username}:${password}`;
-            console.log(curlCommand);
-            // You can use the curlCommand to make the actual request or display it to the user
-        }
+            logMessage(`Connecting to POP3 server at ${server}:${port}...`);
+
+            // Simulate POP3 connection (replace this with real server logic)
+            pop3Connection = true; // Simulating a successful connection
+
+            if (pop3Connection) {
+                logMessage('Connection established.');
+                document.getElementById('disconnect-btn').disabled = false;
+                document.getElementById('retrieve-email-btn').disabled = false;
+                // Simulating retrieved emails
+                updateEmailList([
+                    { subject: 'Welcome to POP3' },
+                    { subject: 'Second email' },
+                    { subject: 'Third email' }
+                ]);
+            } else {
+                logMessage('Connection failed.');
+            }
+        });
+
+        document.getElementById('disconnect-btn').addEventListener('click', function() {
+            logMessage('Disconnecting from POP3 server...');
+            pop3Connection = false; // Simulating disconnect
+            logMessage('Disconnected.');
+            document.getElementById('disconnect-btn').disabled = true;
+            document.getElementById('retrieve-email-btn').disabled = true;
+        });
+
+        document.getElementById('retrieve-email-btn').addEventListener('click', function() {
+            const emailListSelect = document.getElementById('email-list');
+            const selectedEmailIndex = emailListSelect.value;
+            if (selectedEmailIndex !== "") {
+                logMessage(`Retrieving email ${parseInt(selectedEmailIndex) + 1}...`);
+                // Simulate email content (replace with actual email retrieval)
+                const emailContent = `This is the content of email ${parseInt(selectedEmailIndex) + 1}.`;
+                document.getElementById('email-content').textContent = emailContent;
+            } else {
+                logMessage('Please select an email to retrieve.');
+            }
+        });
     </script>
 </body>
 </html>

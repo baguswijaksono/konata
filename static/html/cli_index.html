@@ -6,9 +6,11 @@
 </head>
 <body>
   <div>
-    <h1>API Client Testing</h1>
-
+    <h1>cURL CLI</h1>
+    <button onclick="window.location.href='/'">Back</button>
     <!-- Workspace selection -->
+<br>
+<br>
     <label for="workspaceSelect">Select Workspace:</label>
     <select id="workspaceSelect">
       <!-- Options will be populated by JavaScript -->
@@ -23,6 +25,7 @@
     <br>
     <button id="createWorkspaceBtn">Create Workspace</button>
     <br>
+    <h2>Execute:</h2>
     <!-- Textarea for curl command input -->
     <textarea id="curlCommand" rows="5" placeholder="Enter curl command"></textarea>
     <br>
@@ -36,6 +39,6 @@
     <h2>History:</h2>
     <ul id="historyList"></ul>
   </div>
-
+  <script src="/cli_js"></script>
 </body>
 </html>

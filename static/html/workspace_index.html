@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workspace Management</title>
+    <link rel="stylesheet" href="/style">
+</head>
+<body>
+    <h1>Workspace Management</h1>
+
+    <!-- Section to Display Existing Workspaces -->
+    <section id="workspace-list">
+        <h2>Existing Workspaces</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Config</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="workspaces">
+                <!-- Workspaces will be dynamically injected here -->
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Button to open the 'Create Workspace' form -->
+    <button id="open-create-form">Create New Workspace</button>
+
+    <!-- Create Workspace Form (Hidden by default) -->
+    <div id="create-workspace-form" style="display: none;">
+        <h2>Create New Workspace</h2>
+        <form id="create-form">
+            <label for="create-name">Name:</label>
+            <input type="text" id="create-name" required>
+            <br>
+            <label for="create-config">Config:</label>
+            <textarea id="create-config" required></textarea>
+            <br>
+            <button type="submit">Create</button>
+            <button type="button" id="cancel-create">Cancel</button>
+        </form>
+    </div>
+
+    <!-- Edit Workspace Form (Hidden by default) -->
+    <div id="edit-workspace-form" style="display: none;">
+        <h2>Edit Workspace</h2>
+        <form id="edit-form">
+            <input type="hidden" id="edit-id">
+            <label for="edit-name">Name:</label>
+            <input type="text" id="edit-name" required>
+            <br>
+            <label for="edit-config">Config:</label>
+            <textarea id="edit-config" required></textarea>
+            <br>
+            <button type="submit">Update</button>
+            <button type="button" id="cancel-edit">Cancel</button>
+        </form>
+    </div>
+
+    <script>
+        // Load and display all workspaces
+        async function loadWorkspaces() {
+            const response = await fetch('/workspaces');
+            const workspaces = await response.json();
+            const workspaceTable = document.getElementById('workspaces');
+            workspaceTable.innerHTML = '';
+
+            workspaces.forEach(workspace => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${workspace.ID}</td>
+                    <td>${workspace.Name}</td>
+                    <td>${workspace.Config}</td>
+                    <td>
+                        <button onclick="editWorkspace(${workspace.ID}, '${workspace.Name}', '${workspace.Config}')">Edit</button>
+                        <button onclick="deleteWorkspace(${workspace.ID})">Delete</button>
+                    </td>
+                `;
+                workspaceTable.appendChild(row);
+            });
+        }
+
+        // Create Workspace
+        document.getElementById('create-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('create-name').value;
+            const config = document.getElementById('create-config').value;
+
+            const response = await fetch('/workspace', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, config }),
+            });
+
+            if (response.ok) {
+                loadWorkspaces();
+                document.getElementById('create-workspace-form').style.display = 'none';
+            }
+        });
+
+        // Edit Workspace
+        function editWorkspace(id, name, config) {
+            document.getElementById('edit-id').value = id;
+            document.getElementById('edit-name').value = name;
+            document.getElementById('edit-config').value = config;
+            document.getElementById('edit-workspace-form').style.display = 'block';
+        }
+
+        document.getElementById('edit-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('edit-id').value;
+            const name = document.getElementById('edit-name').value;
+            const config = document.getElementById('edit-config').value;
+
+            const response = await fetch(`/workspace/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, config }),
+            });
+
+            if (response.ok) {
+                loadWorkspaces();
+                document.getElementById('edit-workspace-form').style.display = 'none';
+            }
+        });
+
+        // Delete Workspace
+        async function deleteWorkspace(id) {
+            const response = await fetch(`/workspace/${id}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                loadWorkspaces();
+            }
+        }
+
+        // Show create form
+        document.getElementById('open-create-form').addEventListener('click', () => {
+            document.getElementById('create-workspace-form').style.display = 'block';
+        });
+
+        // Cancel create form
+        document.getElementById('cancel-create').addEventListener('click', () => {
+            document.getElementById('create-workspace-form').style.display = 'none';
+        });
+
+        // Cancel edit form
+        document.getElementById('cancel-edit').addEventListener('click', () => {
+            document.getElementById('edit-workspace-form').style.display = 'none';
+        });
+
+        // Initial load of workspaces
+        loadWorkspaces();
+    </script>
+</body>
+</html>

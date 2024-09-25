@@ -17,8 +17,8 @@ Konata is a simple web application built with Go, Gin, and Gorm that allows you 
 1. Clone the repository:
 
     ```sh
-    git clone https://github.com/baguswijaksono/konata.git
-    cd konata
+    git clone https://github.com/baguswijaksono/re.git
+    cd re
     ```
 
 2. Install the dependencies:
@@ -30,13 +30,13 @@ Konata is a simple web application built with Go, Gin, and Gorm that allows you 
 3. Build the application:
 
     ```sh
-    go build -o konata main.go
+    go build -o re main.go
     ```
 
 4. Run the application:
 
     ```sh
-    ./konata
+    ./re
     ```
 
     The server will start running at `http://localhost:8080`.

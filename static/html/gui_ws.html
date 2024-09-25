@@ -1,27 +1,114 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Konata</title>
+    <title>Konata WebSocket Client</title>
     <link rel="stylesheet" type="text/css" href="/style">
 </head>
 <body>
-    <header>
-        WebSocket Client
-    </header>
     <div>
+        <h1>WebSocket Client</h1>
+        
         <div>
-            <label for="url">WebSocket URL</label>
-            <input type="text" id="url" placeholder="ws://example.com/socket">
+            <label for="ws-url">WebSocket Server URL</label>
+            <input type="text" id="ws-url" placeholder="ws://echo.websocket.org" value="ws://echo.websocket.org">
         </div>
+
         <div>
-            <label for="message">Message</label>
-            <textarea id="message" placeholder="Enter your message here"></textarea>
+            <button id="connect-btn">Connect</button>
+            <button id="disconnect-btn" disabled>Disconnect</button>
         </div>
+        
         <div>
-            <button id="connect">Connect</button>
-            <button id="send" disabled>Send</button>
+            <h2>Send Message</h2>
+            <textarea id="ws-message" rows="4" placeholder="Type your message here..."></textarea>
+            <button id="send-btn" disabled>Send</button>
         </div>
-        <div id="messages"></div>
+
+        <div>
+            <h2>Received Messages</h2>
+            <div id="received-messages" style="border: 1px solid #000; padding: 10px; height: 150px; overflow-y: scroll;">
+                <!-- Received messages will appear here -->
+            </div>
+        </div>
+        
+        <div>
+            <h2>Logs</h2>
+            <div id="logs" style="border: 1px solid #000; padding: 10px; height: 100px; overflow-y: scroll;">
+                <!-- Logs will appear here -->
+            </div>
+        </div>
+
+        <div>
+            <button onclick="window.location.href='/gui'">Back</button>
+        </div>
     </div>
+
+    <script>
+        let socket;
+        
+        function logMessage(message) {
+            const logsDiv = document.getElementById('logs');
+            const newLog = document.createElement('div');
+            newLog.textContent = message;
+            logsDiv.appendChild(newLog);
+            logsDiv.scrollTop = logsDiv.scrollHeight; // Auto scroll to the latest log
+        }
+
+        function addReceivedMessage(message) {
+            const messagesDiv = document.getElementById('received-messages');
+            const newMessage = document.createElement('div');
+            newMessage.textContent = message;
+            messagesDiv.appendChild(newMessage);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight; // Auto scroll to the latest message
+        }
+
+        // Connect to WebSocket
+        document.getElementById('connect-btn').addEventListener('click', function() {
+            const wsUrl = document.getElementById('ws-url').value;
+            logMessage('Connecting to: ' + wsUrl);
+
+            socket = new WebSocket(wsUrl);
+
+            socket.onopen = function() {
+                logMessage('WebSocket connection opened.');
+                document.getElementById('send-btn').disabled = false;
+                document.getElementById('disconnect-btn').disabled = false;
+            };
+
+            socket.onmessage = function(event) {
+                logMessage('Message received: ' + event.data);
+                addReceivedMessage(event.data);
+            };
+
+            socket.onclose = function() {
+                logMessage('WebSocket connection closed.');
+                document.getElementById('send-btn').disabled = true;
+                document.getElementById('disconnect-btn').disabled = true;
+            };
+
+            socket.onerror = function(error) {
+                logMessage('WebSocket error: ' + error.message);
+            };
+        });
+
+        // Send message
+        document.getElementById('send-btn').addEventListener('click', function() {
+            const message = document.getElementById('ws-message').value;
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                logMessage('Sending message: ' + message);
+                socket.send(message);
+            } else {
+                logMessage('Cannot send message, WebSocket is not open.');
+            }
+        });
+
+        // Disconnect WebSocket
+        document.getElementById('disconnect-btn').addEventListener('click', function() {
+            if (socket) {
+                logMessage('Disconnecting WebSocket...');
+                socket.close();
+            }
+        });
+    </script>
 </body>
 </html>

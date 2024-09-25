@@ -12,8 +12,6 @@ document.getElementById('executeBtn').addEventListener('click', async () => {
   document.getElementById('responseOutput').innerText = response.response;
   loadHistory();  // Reload history after execution
 });
-
-
     document.getElementById('createWorkspaceBtn').addEventListener('click', async () => {
       const name = document.getElementById('workspaceName').value;
       const config = document.getElementById('workspaceConfig').value;
