@@ -91,12 +91,6 @@ func executeCurl(c *gin.Context) {
 	c.JSON(200, gin.H{"response": response})
 }
 
-func getHistory(c *gin.Context) {
-	var history []History
-	db.Order("timestamp desc").Find(&history)
-	c.JSON(200, history)
-}
-
 func createWorkspace(c *gin.Context) {
 	var json struct {
 		Name   string `json:"name"`
@@ -171,6 +165,17 @@ func getWorkspace(c *gin.Context) {
 	c.JSON(200, workspace)
 }
 
+func getHistory(c *gin.Context) {
+	workspaceID := c.Param("workspace_id")
+
+	var history []History
+	if err := db.Where("workspace_id = ?", workspaceID).Order("timestamp desc").Find(&history).Error; err != nil {
+		c.JSON(404, gin.H{"error": "Workspace not found"})
+		return
+	}
+
+	c.JSON(200, history)
+}
 func main() {
 	initDB()
 	r := gin.Default()
@@ -198,7 +203,7 @@ func main() {
 	}
 
 	r.POST("/execute", executeCurl)
-	r.GET("/history", getHistory)
+	r.GET("/history/:workspace_id", getHistory)
 	r.POST("/workspace", createWorkspace)
 	r.GET("/workspaces", getWorkspaces)
 	r.GET("/workspace/:id", getWorkspace)       // Get workspace route
